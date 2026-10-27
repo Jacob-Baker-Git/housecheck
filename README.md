@@ -1,5 +1,7 @@
 # HouseCheck
 
+![HouseCheck comparing GU2 7XH and SO14 5FN](docs/screenshot.png)
+
 **Compare student houses before you sign, with every claim traced to public data.**
 
 Open Agent Hackathon 2026 · Track 1: Fragmented Intelligence · Team *It Works On My Machine*
