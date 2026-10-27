@@ -1,6 +1,6 @@
 # 2. Reflection on the USL
 
-> Numbers are from the live run on 27 Oct 2026 ([`RESULTS.md`](RESULTS.md)): 3 postcodes, 1,703 street crimes and 750 food places through the USL. Lines still marked ⟨fill⟩ are Jacob's own estimates or the hand-coded timing.
+> Numbers are from the live run on 27 Oct 2026 ([`RESULTS.md`](RESULTS.md)): 3 postcodes, 1,703 street crimes and 750 food places through the USL. Time estimates are Jacob's own.
 
 ## 2a. How the USL saved time compared with hand-coding
 
@@ -31,7 +31,7 @@
 
 DQ rules ran over every row: `dq_crime_month_format` 1,703/1,703 valid; `dq_food_rating_known` and `dq_food_rating_dated` 750/750 valid; primary and foreign keys all valid. `RUN DQ` took 4–11 s per table.
 
-**Where the time actually went.** The whole USL went from first run to a clean 66/66 in about 15 minutes on the morning of 27 Oct (06:50 to 07:04), across three runs. Each fix was one change to a source definition, not to the agents: leaving out a source with no data (Bolton crime), and re-pointing the FSA source to sort by distance. Once the views existed, each question in `02_explore.sql` and `05_usl_queries.sql` was a single SQL statement. Hand-coding the same three sources and the cross-source check would, in my estimate, have taken ⟨fill: your estimate, e.g. "an afternoon"⟩, and the agent would have had to own that code.
+**Where the time actually went.** The whole USL went from first run to a clean 66/66 in about 15 minutes on the morning of 27 Oct (06:50 to 07:04), across three runs. Each fix was one change to a source definition, not to the agents: leaving out a source with no data (Bolton crime), and re-pointing the FSA source to sort by distance. Once the views existed, each question in `02_explore.sql` and `05_usl_queries.sql` was a single SQL statement. Hand-coding the same three sources and the cross-source check would, in my estimate, have taken about 3–4 days, and the agent would have had to own that code.
 
 **The USL caught a bug in our own data.** On the first full run, query 2 ("food hygiene per postcode") returned exactly 250 food places for every postcode, all 250 rated 4 or 5. Seeing three different towns side by side in one table made it obvious that was wrong: the FSA caps a search at 250 results and, unless you pass `sortOptionKey=distance`, doesn't return the nearest ones. The council check (query 3) agreed: it listed New Forest for central Southampton and Wigan for Farnworth, both too far away for a 0.5-mile search. We fixed the source definition, re-registered it, re-activated `food_establishment`, and the USL tables and DQ rules picked it up without touching the agent code. In a hand-coded pipeline that check would have been a one-off script nobody re-ran.
 
@@ -45,7 +45,7 @@ I'm a second-year Computer Science student heading into a placement year, so "my
 
 **Where it wouldn't.** For a single source with a stable schema, or a mobile app that has to work offline (my IronPulse Android app deliberately has no network permission), a semantic layer adds a server I don't need.
 
-**Bonus: forecast.** For the PC Builder catalogue: onboarding a new retailer feed is currently ⟨fill: e.g. ~3 hours⟩ (parser, mapping, tests); on a USL I'd expect ⟨fill: ~1 hour⟩ (REST table, view, activate), mostly because the joins and DQ rules already exist. Over ⟨fill⟩ feeds that is ⟨fill⟩ hours saved.
+**Bonus: forecast.** Building the PC Builder catalogue (678 components) took me about a week on and off, and most of that was getting the data into one consistent shape and checking it, which is the part a USL takes over: the joins live in one model and the checks are registered DQ rules rather than one-off scripts. HouseCheck is the comparison I can actually measure: about 15 minutes to a clean USL with Zetaris, against my estimate of 3–4 days to hand-code the same three sources, joins and checks. I'd expect a similar order of saving on a catalogue like PC Builder's, though I haven't measured it.
 
 ## 2c. How to make the USL stronger: a PM requirement
 
