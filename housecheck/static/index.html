@@ -9,6 +9,7 @@
   :root { --bg:#f7f6f2; --card:#fff; --ink:#1d2433; --muted:#5d6577; --line:#e3e1da; --accent:#1f6f5c; --warn:#a15c07; }
   @media (prefers-color-scheme: dark) { :root { --bg:#14171d; --card:#1c2029; --ink:#e7e9ee; --muted:#9aa2b1; --line:#2c313c; --accent:#4fbf9f; --warn:#e0a24a; } }
   * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
   body { margin:0; font:16px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; background:var(--bg); color:var(--ink); }
   main { max-width: 980px; margin: 0 auto; padding: 32px 16px 64px; }
   h1 { font-size: 28px; margin: 0 0 4px; letter-spacing: -0.01em; }
@@ -43,7 +44,7 @@
   <form id="f">
     <div>
       <label for="pcs">Postcodes (2 to 4, separated by commas)</label>
-      <input id="pcs" value="GU2 7XH, GU1 1AA" required>
+      <input id="pcs" value="GU2 7XH, SO14 5FN" required>
     </div>
     <div>
       <label for="pri">What matters to you?</label>
@@ -69,7 +70,10 @@ fetch('/api/status').then(r => r.json()).then(s => {
 }).catch(() => {});
 $('f').addEventListener('submit', async (e) => {
   e.preventDefault();
-  $('go').disabled = true; $('msg').textContent = 'Agents working… (Nemotron can take a minute)';
+  $('go').disabled = true; $('out').hidden = true;
+  const t0 = Date.now();
+  const tick = () => { $('msg').textContent = `Agents working… ${Math.round((Date.now() - t0) / 1000)}s (planner → Zetaris → World Model → critic → Nemotron reporter → critic)`; };
+  tick(); const timer = setInterval(tick, 1000);
   try {
     const r = await fetch('/api/compare', { method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({ postcodes: $('pcs').value, priorities: $('pri').value }) });
@@ -82,7 +86,7 @@ $('f').addEventListener('submit', async (e) => {
     $('out').hidden = false; $('msg').textContent = `Done in ${body.seconds}s`;
   } catch (err) {
     $('msg').innerHTML = `<span class="err">${String(err.message || err)}</span>`;
-  } finally { $('go').disabled = false; }
+  } finally { clearInterval(timer); $('go').disabled = false; }
 });
 </script>
 </body>
