@@ -65,6 +65,8 @@ def plan(priorities: str, postcodes: list[str], llm: Nightshift, trace: Trace, u
             trace.log("planner", "llm_unavailable", status="warn", error=str(e)[:200])
 
     p = _rules(priorities)
+    if not priorities.strip():
+        p.planned_by = "default weights (no priorities given)"
     trace.log("planner", "plan_ready", weights=p.weights, highlight=p.highlight_crimes, by=p.planned_by)
     return p
 
