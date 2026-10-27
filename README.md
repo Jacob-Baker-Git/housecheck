@@ -45,7 +45,7 @@ Every step is logged to `runs/<run_id>/trace.jsonl`.
 |---|---|---|
 | **Zetaris** | `housecheck/zetaris.py`, `housecheck/sources.py`, `agents/researcher.py` | The only way HouseCheck reaches data. Each public API is registered at run time as a `CREATE LIGHTNING REST TABLE`; counts are aggregated in Zetaris SQL (`GROUP BY`, `LATERAL VIEW explode`). The second-stage tables are registered with coordinates Zetaris returned in the first. |
 | **Meterless Nightshift + NVIDIA Nemotron** | `housecheck/llm.py`, `agents/planner.py`, `agents/reporter.py` | All model calls go through the Nightshift runtime (OpenAI-compatible, Meterless provider contract headers) to Nemotron lanes. Reasoning tokens are stripped; invalid JSON goes back to the model once. |
-| **Meterless World Model engine** | `housecheck/world_model.py` | Implements the World Model spec: `ent_` stable hash IDs, content-hashed observations (re-ingest changes nothing; tested), provenance per fact, `current_facts` and `conflicts` derived views. The Researcher writes it; the Critic and Reporter only read it. |
+| **Meterless World Model engine** | `housecheck/world_model.py` | Python implementation of the World Model engine: stable IDs **byte-identical to the Meterless reference** (checked against vectors from its own code), idempotent ingest, no write without provenance, bitemporal relationships, audit log, `current_facts` and `conflicts` views. Passes all 8 checks of the official conformance suite, ported to Python. The Researcher writes it; the Critic and Reporter only read it. |
 | **Coding assistant** | whole repo | Built with Claude as the coding assistant (see Team). |
 
 More detail: [`docs/sponsor-technology.md`](docs/sponsor-technology.md).
@@ -92,7 +92,7 @@ housecheck serve                                       # http://127.0.0.1:8000
 pytest
 ```
 
-20 tests, no network: World Model idempotency and conflict detection, Critic rejecting invented and computed numbers, and an end-to-end run where a fake Nemotron invents a number, the Critic sends it back, and the revision passes.
+30 tests, no network: the Meterless World Model conformance checks and reference ID vectors, World Model idempotency and conflict detection, the Critic rejecting invented and computed numbers, the Zetaris USL SQL, and an end-to-end run where a fake Nemotron invents a number, the Critic sends it back, and the revision passes.
 
 ## Limits (the Critic says these out loud too)
 

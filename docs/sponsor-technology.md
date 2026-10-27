@@ -27,16 +27,20 @@ Numbers never come from the model. The Critic rejects any sentence containing a 
 
 ## Meterless World Model engine: one shared truth
 
-`housecheck/world_model.py` implements the Meterless World Model specification in Python:
+`housecheck/world_model.py` is a Python implementation of the Meterless World Model engine, built from its specification and checked against its reference implementation (Apache-2.0):
 
-| Spec | HouseCheck |
-|---|---|
-| Stable hash IDs (§3) | `ent_` + first 16 hex of sha256(`type:normalized_name`), NFKD/casing/whitespace normalised |
-| Idempotent ingest (§5) | observation ID = hash of entity, attribute, value, source; re-ingesting is a no-op (tested) |
-| Provenance | source, path (`zetaris`/`sample`), exact SQL, fetch time on every observation |
-| Entities and edges | address → ward, council, police force |
-| Aggregates rebuilt (§5 step 9) | `mention_count`, `state` updated for touched entities |
-| Derived views (§8–9) | `current_facts` (latest per attribute and source) and `conflicts` (sources disagree) |
+| Spec / reference | HouseCheck | Evidence |
+|---|---|---|
+| Stable hash IDs (§3, `entityIdFromName`, `normalizeName`) | `ent_` + first 16 hex of sha256(`type:normalizeName(name)`), same normalisation steps in the same order | **Byte-identical** to IDs produced by the reference's own code for 16 names, including accents, NBSP, zero-width and full-width characters (`tests/fixtures/meterless_reference_vectors.json`) |
+| Merge banding (`decide`) | 0.85 auto-merge, 0.82 review, else new | Same vectors |
+| Idempotent ingest (§5) | content-hashed observations; `changed=false` and identical `state_shape_canonical()` on re-ingest | conformance idem-001, idem-002 |
+| No provenance, no write | every observation needs a source; Zetaris facts need their SQL | conformance prov-001 |
+| Bitemporal relationships | a superseding edge closes the open one; `neighbors_of(..., at=)` respects validity | conformance bitemp-001 |
+| Audit log | append-only, strictly increasing `seq` on every mutation | conformance audit-001 |
+| Aggregates rebuilt (§5 step 9) | `mention_count`, `state` for touched entities | |
+| Derived views (§8–9) | `current_facts` (latest per attribute and source), `conflicts` (sources disagree) | used by the Critic |
+
+**Conformance.** `tests/test_world_model_conformance.py` ports all 8 checks of the official runner (`engines/world-model/conformance/runner.ts`) with the same ids and descriptions; HouseCheck passes 8/8. The official runner itself loads a TypeScript module, so it can't run a Python engine directly; the reference implementation passes it 8/8.
 
 The council comes from two sources (postcodes.io, and the authority that inspects most nearby food places). When they differ, the World Model's `conflicts` view surfaces it and the Critic tells the student the food data may describe the neighbouring area.
 

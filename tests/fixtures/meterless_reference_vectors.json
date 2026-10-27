@@ -1,0 +1,134 @@
+{
+ "ids": [
+  {
+   "type": "address",
+   "name": "GU2 7XH",
+   "normalized": "gu2 7xh",
+   "id": "ent_c6a09214acca8a27"
+  },
+  {
+   "type": "address",
+   "name": "gu2  7xh",
+   "normalized": "gu2 7xh",
+   "id": "ent_c6a09214acca8a27"
+  },
+  {
+   "type": "address",
+   "name": "SO14 5FN",
+   "normalized": "so14 5fn",
+   "id": "ent_25dc0225acce841c"
+  },
+  {
+   "type": "address",
+   "name": "BL4 0LL",
+   "normalized": "bl4 0ll",
+   "id": "ent_d1729ee7a3d82a46"
+  },
+  {
+   "type": "ward",
+   "name": "Onslow",
+   "normalized": "onslow",
+   "id": "ent_e0e2787395142613"
+  },
+  {
+   "type": "local_authority",
+   "name": "Guildford",
+   "normalized": "guildford",
+   "id": "ent_12242f2f9b3709e4"
+  },
+  {
+   "type": "local_authority",
+   "name": "Southampton",
+   "normalized": "southampton",
+   "id": "ent_f64917b88c05e384"
+  },
+  {
+   "type": "police_force",
+   "name": "surrey",
+   "normalized": "surrey",
+   "id": "ent_66718f68441efea5"
+  },
+  {
+   "type": "person",
+   "name": "José  García",
+   "normalized": "jose garcia",
+   "id": "ent_5906acd871fa761d"
+  },
+  {
+   "type": "person",
+   "name": "Jose Garcia",
+   "normalized": "jose garcia",
+   "id": "ent_5906acd871fa761d"
+  },
+  {
+   "type": "org",
+   "name": "Acme Corp",
+   "normalized": "acme corp",
+   "id": "ent_f441105cae478f27"
+  },
+  {
+   "type": "org",
+   "name": "Acme Corporation",
+   "normalized": "acme corporation",
+   "id": "ent_537921142878fa2c"
+  },
+  {
+   "type": "x",
+   "name": "Zero​Width",
+   "normalized": "zerowidth",
+   "id": "ent_8b7005682d9b9cbe"
+  },
+  {
+   "type": "x",
+   "name": "  Tabs\tand\nnewlines  ",
+   "normalized": "tabs and newlines",
+   "id": "ent_73170f658c2f0de6"
+  },
+  {
+   "type": "x",
+   "name": "ＦＵＬＬ　ＷＩＤＴＨ",
+   "normalized": "full width",
+   "id": "ent_7bf5c6f1ab0620de"
+  },
+  {
+   "type": "x",
+   "name": "Straße",
+   "normalized": "straße",
+   "id": "ent_f2661585ae00a61b"
+  }
+ ],
+ "decide": [
+  {
+   "s": 0.9,
+   "d": "auto-merge"
+  },
+  {
+   "s": 0.85,
+   "d": "auto-merge"
+  },
+  {
+   "s": 0.849,
+   "d": "review"
+  },
+  {
+   "s": 0.84,
+   "d": "review"
+  },
+  {
+   "s": 0.82,
+   "d": "review"
+  },
+  {
+   "s": 0.819,
+   "d": "new"
+  },
+  {
+   "s": 0.81,
+   "d": "new"
+  },
+  {
+   "s": 0,
+   "d": "new"
+  }
+ ]
+}
