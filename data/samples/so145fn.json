@@ -1,0 +1,157 @@
+{
+ "postcode": "SO14 5FN",
+ "recorded_at": "2026-10-27T07:11:33Z",
+ "recorded_via": "zetaris",
+ "queries": {
+  "postcode": {
+   "sql": "SELECT result.postcode AS postcode, result.latitude AS lat, result.longitude AS lng, result.admin_district AS admin_district, result.admin_ward AS ward, result.lsoa AS lsoa FROM housecheck_live.pc_so145fn",
+   "endpoint": "https://api.postcodes.io/postcodes/SO145FN",
+   "rows": [
+    {
+     "postcode": "SO14 5FN",
+     "lat": "50.902555",
+     "lng": "-1.392459",
+     "admin_district": "Southampton",
+     "ward": "Bargate",
+     "lsoa": "Southampton 033C"
+    }
+   ]
+  },
+  "neighbourhood": {
+   "sql": "SELECT force, neighbourhood FROM housecheck_live.hood_so145fn",
+   "endpoint": "https://data.police.uk/api/locate-neighbourhood?q=50.902555,-1.392459",
+   "rows": [
+    {
+     "force": "hampshire",
+     "neighbourhood": "2SC02"
+    }
+   ]
+  },
+  "crime": {
+   "sql": "SELECT category, month, COUNT(*) AS n FROM housecheck_live.crime_so145fn GROUP BY category, month ORDER BY n DESC",
+   "endpoint": "https://data.police.uk/api/crimes-street/all-crime?lat=50.902555&lng=-1.392459",
+   "rows": [
+    {
+     "category": "violent-crime",
+     "month": "2026-08",
+     "n": "409"
+    },
+    {
+     "category": "shoplifting",
+     "month": "2026-08",
+     "n": "177"
+    },
+    {
+     "category": "anti-social-behaviour",
+     "month": "2026-08",
+     "n": "173"
+    },
+    {
+     "category": "public-order",
+     "month": "2026-08",
+     "n": "90"
+    },
+    {
+     "category": "criminal-damage-arson",
+     "month": "2026-08",
+     "n": "77"
+    },
+    {
+     "category": "other-theft",
+     "month": "2026-08",
+     "n": "60"
+    },
+    {
+     "category": "drugs",
+     "month": "2026-08",
+     "n": "44"
+    },
+    {
+     "category": "vehicle-crime",
+     "month": "2026-08",
+     "n": "33"
+    },
+    {
+     "category": "robbery",
+     "month": "2026-08",
+     "n": "22"
+    },
+    {
+     "category": "burglary",
+     "month": "2026-08",
+     "n": "18"
+    },
+    {
+     "category": "other-crime",
+     "month": "2026-08",
+     "n": "13"
+    },
+    {
+     "category": "theft-from-the-person",
+     "month": "2026-08",
+     "n": "13"
+    },
+    {
+     "category": "possession-of-weapons",
+     "month": "2026-08",
+     "n": "11"
+    },
+    {
+     "category": "bicycle-theft",
+     "month": "2026-08",
+     "n": "9"
+    }
+   ]
+  },
+  "crime_updated": {
+   "sql": "SELECT date FROM housecheck_live.crime_updated",
+   "endpoint": "https://data.police.uk/api/crime-last-updated",
+   "rows": [
+    {
+     "date": "2026-08-01"
+    }
+   ]
+  },
+  "food": {
+   "sql": "SELECT e.RatingValue AS rating, e.LocalAuthorityName AS authority, COUNT(*) AS n FROM housecheck_live.fsa_so145fn LATERAL VIEW explode(establishments) AS e GROUP BY e.RatingValue, e.LocalAuthorityName",
+   "endpoint": "https://api.ratings.food.gov.uk/Establishments?latitude=50.902555&longitude=-1.392459&maxDistanceLimit=0.5&sortOptionKey=distance&pageSize=250",
+   "rows": [
+    {
+     "rating": "AwaitingInspection",
+     "authority": "Southampton",
+     "n": "9"
+    },
+    {
+     "rating": "5",
+     "authority": "Southampton",
+     "n": "161"
+    },
+    {
+     "rating": "3",
+     "authority": "Southampton",
+     "n": "25"
+    },
+    {
+     "rating": "2",
+     "authority": "Southampton",
+     "n": "5"
+    },
+    {
+     "rating": "4",
+     "authority": "Southampton",
+     "n": "41"
+    },
+    {
+     "rating": "1",
+     "authority": "Southampton",
+     "n": "7"
+    },
+    {
+     "rating": "Exempt",
+     "authority": "Southampton",
+     "n": "2"
+    }
+   ]
+  }
+ }
+}

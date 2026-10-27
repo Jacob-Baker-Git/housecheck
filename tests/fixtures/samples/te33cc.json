@@ -1,0 +1,66 @@
+{
+ "postcode": "TE3 3CC",
+ "recorded_at": "2026-10-27T00:00:00Z",
+ "recorded_via": "synthetic-test-fixture",
+ "queries": {
+  "postcode": {
+   "sql": "SYNTHETIC FIXTURE",
+   "endpoint": "test",
+   "rows": [
+    {
+     "postcode": "TE3 3CC",
+     "lat": 51.24,
+     "lng": -0.59,
+     "admin_district": "Testshire",
+     "ward": "North Ward",
+     "lsoa": "Testshire 001A"
+    }
+   ]
+  },
+  "neighbourhood": {
+   "sql": "SYNTHETIC FIXTURE",
+   "endpoint": "test",
+   "rows": [
+    {
+     "force": "test-police",
+     "neighbourhood": "TP1"
+    }
+   ]
+  },
+  "crime_updated": {
+   "sql": "SYNTHETIC FIXTURE",
+   "endpoint": "test",
+   "rows": [
+    {
+     "date": "2026-08-01"
+    }
+   ]
+  },
+  "food": {
+   "sql": "SYNTHETIC FIXTURE",
+   "endpoint": "test",
+   "rows": [
+    {
+     "rating": "5",
+     "authority": "Testshire",
+     "n": 30
+    },
+    {
+     "rating": "4",
+     "authority": "Testshire",
+     "n": 8
+    },
+    {
+     "rating": "2",
+     "authority": "Testshire",
+     "n": 2
+    },
+    {
+     "rating": "Exempt",
+     "authority": "Testshire",
+     "n": 5
+    }
+   ]
+  }
+ }
+}

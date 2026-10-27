@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HouseCheck</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
+<style>
+  :root { --bg:#f7f6f2; --card:#fff; --ink:#1d2433; --muted:#5d6577; --line:#e3e1da; --accent:#1f6f5c; --warn:#a15c07; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#14171d; --card:#1c2029; --ink:#e7e9ee; --muted:#9aa2b1; --line:#2c313c; --accent:#4fbf9f; --warn:#e0a24a; } }
+  * { box-sizing: border-box; }
+  body { margin:0; font:16px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; background:var(--bg); color:var(--ink); }
+  main { max-width: 980px; margin: 0 auto; padding: 32px 16px 64px; }
+  h1 { font-size: 28px; margin: 0 0 4px; letter-spacing: -0.01em; }
+  .sub { color: var(--muted); margin: 0 0 24px; }
+  form { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px; display:grid; gap:12px; }
+  label { font-size: 13px; font-weight: 600; color: var(--muted); }
+  input, textarea { width:100%; font:inherit; color:inherit; background:transparent; border:1px solid var(--line); border-radius:8px; padding:10px 12px; }
+  .row { display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+  button { font:inherit; font-weight:600; background:var(--accent); color:#fff; border:0; border-radius:8px; padding:10px 18px; cursor:pointer; }
+  button:disabled { opacity:.6; cursor:wait; }
+  .pill { font-size:12px; padding:3px 9px; border-radius:99px; border:1px solid var(--line); color:var(--muted); }
+  .pill.ok { color: var(--accent); border-color: var(--accent); }
+  .pill.bad { color: var(--warn); border-color: var(--warn); }
+  .grid { display:grid; grid-template-columns: 1fr 280px; gap:16px; margin-top:20px; }
+  @media (max-width: 820px) { .grid { grid-template-columns: 1fr; } }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px 20px; overflow-x:auto; }
+  .report table { border-collapse: collapse; width:100%; font-size:14px; }
+  .report th, .report td { border-bottom:1px solid var(--line); padding:6px 8px; text-align:left; }
+  .report code { font-size:12px; word-break: break-all; }
+  .report blockquote { margin:0; padding:8px 12px; border-left:3px solid var(--accent); color:var(--muted); }
+  .steps { list-style:none; padding:0; margin:0; font-size:13px; }
+  .steps li { padding:6px 0; border-bottom:1px solid var(--line); }
+  .steps b { color: var(--accent); }
+  .steps .warn b { color: var(--warn); }
+  .err { color: var(--warn); }
+</style>
+</head>
+<body>
+<main>
+  <h1>HouseCheck</h1>
+  <p class="sub">Compare student houses on crime and food hygiene. Every number comes from public data through Zetaris, and a Critic agent removes anything the data doesn't back.</p>
+  <form id="f">
+    <div>
+      <label for="pcs">Postcodes (2 to 4, separated by commas)</label>
+      <input id="pcs" value="GU2 7XH, GU1 1AA" required>
+    </div>
+    <div>
+      <label for="pri">What matters to you?</label>
+      <textarea id="pri" rows="2" placeholder="e.g. I walk back from the library late and I've had a bike stolen before"></textarea>
+    </div>
+    <div class="row">
+      <button id="go">Compare</button>
+      <span id="z" class="pill">Zetaris …</span>
+      <span id="n" class="pill">Nightshift …</span>
+      <span id="msg" class="sub" style="margin:0"></span>
+    </div>
+  </form>
+  <div class="grid" id="out" hidden>
+    <div class="card report" id="report"></div>
+    <div class="card"><b>Agent steps</b><ul class="steps" id="steps"></ul></div>
+  </div>
+</main>
+<script>
+const $ = (id) => document.getElementById(id);
+fetch('/api/status').then(r => r.json()).then(s => {
+  $('z').textContent = 'Zetaris ' + s.zetaris; $('z').className = 'pill ' + (s.zetaris === 'online' ? 'ok' : 'bad');
+  $('n').textContent = 'Nightshift ' + s.nightshift; $('n').className = 'pill ' + (s.nightshift === 'online' ? 'ok' : 'bad');
+}).catch(() => {});
+$('f').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  $('go').disabled = true; $('msg').textContent = 'Agents working… (Nemotron can take a minute)';
+  try {
+    const r = await fetch('/api/compare', { method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ postcodes: $('pcs').value, priorities: $('pri').value }) });
+    const body = await r.json();
+    if (!r.ok) throw new Error(body.detail || r.statusText);
+    $('report').innerHTML = marked.parse(body.report_md);
+    $('steps').innerHTML = body.trace.map(t =>
+      `<li class="${t.status !== 'ok' ? 'warn' : ''}"><b>${t.agent}</b> ${t.action.replaceAll('_',' ')}` +
+      `${t.query ? ' · ' + t.query : ''}${t.rows !== undefined ? ' · ' + t.rows + ' rows' : ''}${t.ms ? ' · ' + t.ms + ' ms' : ''}</li>`).join('');
+    $('out').hidden = false; $('msg').textContent = `Done in ${body.seconds}s`;
+  } catch (err) {
+    $('msg').innerHTML = `<span class="err">${String(err.message || err)}</span>`;
+  } finally { $('go').disabled = false; }
+});
+</script>
+</body>
+</html>

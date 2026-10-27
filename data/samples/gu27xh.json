@@ -1,0 +1,157 @@
+{
+ "postcode": "GU2 7XH",
+ "recorded_at": "2026-10-27T07:11:30Z",
+ "recorded_via": "zetaris",
+ "queries": {
+  "postcode": {
+   "sql": "SELECT result.postcode AS postcode, result.latitude AS lat, result.longitude AS lng, result.admin_district AS admin_district, result.admin_ward AS ward, result.lsoa AS lsoa FROM housecheck_live.pc_gu27xh",
+   "endpoint": "https://api.postcodes.io/postcodes/GU27XH",
+   "rows": [
+    {
+     "postcode": "GU2 7XH",
+     "lat": "51.242685",
+     "lng": "-0.587936",
+     "admin_district": "Guildford",
+     "ward": "Onslow",
+     "lsoa": "Guildford 015C"
+    }
+   ]
+  },
+  "neighbourhood": {
+   "sql": "SELECT force, neighbourhood FROM housecheck_live.hood_gu27xh",
+   "endpoint": "https://data.police.uk/api/locate-neighbourhood?q=51.242685,-0.587936",
+   "rows": [
+    {
+     "force": "surrey",
+     "neighbourhood": "GDOU"
+    }
+   ]
+  },
+  "crime": {
+   "sql": "SELECT category, month, COUNT(*) AS n FROM housecheck_live.crime_gu27xh GROUP BY category, month ORDER BY n DESC",
+   "endpoint": "https://data.police.uk/api/crimes-street/all-crime?lat=51.242685&lng=-0.587936",
+   "rows": [
+    {
+     "category": "violent-crime",
+     "month": "2026-08",
+     "n": "185"
+    },
+    {
+     "category": "anti-social-behaviour",
+     "month": "2026-08",
+     "n": "79"
+    },
+    {
+     "category": "shoplifting",
+     "month": "2026-08",
+     "n": "76"
+    },
+    {
+     "category": "public-order",
+     "month": "2026-08",
+     "n": "64"
+    },
+    {
+     "category": "criminal-damage-arson",
+     "month": "2026-08",
+     "n": "38"
+    },
+    {
+     "category": "other-theft",
+     "month": "2026-08",
+     "n": "37"
+    },
+    {
+     "category": "drugs",
+     "month": "2026-08",
+     "n": "26"
+    },
+    {
+     "category": "vehicle-crime",
+     "month": "2026-08",
+     "n": "16"
+    },
+    {
+     "category": "other-crime",
+     "month": "2026-08",
+     "n": "8"
+    },
+    {
+     "category": "burglary",
+     "month": "2026-08",
+     "n": "7"
+    },
+    {
+     "category": "robbery",
+     "month": "2026-08",
+     "n": "6"
+    },
+    {
+     "category": "possession-of-weapons",
+     "month": "2026-08",
+     "n": "5"
+    },
+    {
+     "category": "theft-from-the-person",
+     "month": "2026-08",
+     "n": "4"
+    },
+    {
+     "category": "bicycle-theft",
+     "month": "2026-08",
+     "n": "3"
+    }
+   ]
+  },
+  "crime_updated": {
+   "sql": "SELECT date FROM housecheck_live.crime_updated",
+   "endpoint": "https://data.police.uk/api/crime-last-updated",
+   "rows": [
+    {
+     "date": "2026-08-01"
+    }
+   ]
+  },
+  "food": {
+   "sql": "SELECT e.RatingValue AS rating, e.LocalAuthorityName AS authority, COUNT(*) AS n FROM housecheck_live.fsa_gu27xh LATERAL VIEW explode(establishments) AS e GROUP BY e.RatingValue, e.LocalAuthorityName",
+   "endpoint": "https://api.ratings.food.gov.uk/Establishments?latitude=51.242685&longitude=-0.587936&maxDistanceLimit=0.5&sortOptionKey=distance&pageSize=250",
+   "rows": [
+    {
+     "rating": "1",
+     "authority": "Guildford",
+     "n": "3"
+    },
+    {
+     "rating": "AwaitingInspection",
+     "authority": "Guildford",
+     "n": "10"
+    },
+    {
+     "rating": "5",
+     "authority": "Guildford",
+     "n": "167"
+    },
+    {
+     "rating": "4",
+     "authority": "Guildford",
+     "n": "36"
+    },
+    {
+     "rating": "Exempt",
+     "authority": "Guildford",
+     "n": "19"
+    },
+    {
+     "rating": "2",
+     "authority": "Guildford",
+     "n": "1"
+    },
+    {
+     "rating": "3",
+     "authority": "Guildford",
+     "n": "14"
+    }
+   ]
+  }
+ }
+}

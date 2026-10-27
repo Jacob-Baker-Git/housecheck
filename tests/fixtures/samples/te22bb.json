@@ -1,0 +1,87 @@
+{
+ "postcode": "TE2 2BB",
+ "recorded_at": "2026-10-27T00:00:00Z",
+ "recorded_via": "synthetic-test-fixture",
+ "queries": {
+  "postcode": {
+   "sql": "SYNTHETIC FIXTURE",
+   "endpoint": "test",
+   "rows": [
+    {
+     "postcode": "TE2 2BB",
+     "lat": 51.25,
+     "lng": -0.57,
+     "admin_district": "Testshire",
+     "ward": "East Ward",
+     "lsoa": "Testshire 001A"
+    }
+   ]
+  },
+  "neighbourhood": {
+   "sql": "SYNTHETIC FIXTURE",
+   "endpoint": "test",
+   "rows": [
+    {
+     "force": "test-police",
+     "neighbourhood": "TP2"
+    }
+   ]
+  },
+  "crime": {
+   "sql": "SYNTHETIC FIXTURE",
+   "endpoint": "test",
+   "rows": [
+    {
+     "category": "anti-social-behaviour",
+     "month": "2026-08",
+     "n": 40
+    },
+    {
+     "category": "violent-crime",
+     "month": "2026-08",
+     "n": 30
+    },
+    {
+     "category": "burglary",
+     "month": "2026-08",
+     "n": 9
+    },
+    {
+     "category": "bicycle-theft",
+     "month": "2026-08",
+     "n": 2
+    },
+    {
+     "category": "burglary",
+     "month": "2026-07",
+     "n": 3
+    }
+   ]
+  },
+  "crime_updated": {
+   "sql": "SYNTHETIC FIXTURE",
+   "endpoint": "test",
+   "rows": [
+    {
+     "date": "2026-08-01"
+    }
+   ]
+  },
+  "food": {
+   "sql": "SYNTHETIC FIXTURE",
+   "endpoint": "test",
+   "rows": [
+    {
+     "rating": "5",
+     "authority": "Otherborough",
+     "n": 2
+    },
+    {
+     "rating": "3",
+     "authority": "Otherborough",
+     "n": 1
+    }
+   ]
+  }
+ }
+}

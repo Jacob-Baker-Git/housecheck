@@ -1,0 +1,97 @@
+{
+ "postcode": "TE1 1AA",
+ "recorded_at": "2026-10-27T00:00:00Z",
+ "recorded_via": "synthetic-test-fixture",
+ "queries": {
+  "postcode": {
+   "sql": "SYNTHETIC FIXTURE",
+   "endpoint": "test",
+   "rows": [
+    {
+     "postcode": "TE1 1AA",
+     "lat": 51.24,
+     "lng": -0.59,
+     "admin_district": "Testshire",
+     "ward": "North Ward",
+     "lsoa": "Testshire 001A"
+    }
+   ]
+  },
+  "neighbourhood": {
+   "sql": "SYNTHETIC FIXTURE",
+   "endpoint": "test",
+   "rows": [
+    {
+     "force": "test-police",
+     "neighbourhood": "TP1"
+    }
+   ]
+  },
+  "crime": {
+   "sql": "SYNTHETIC FIXTURE",
+   "endpoint": "test",
+   "rows": [
+    {
+     "category": "anti-social-behaviour",
+     "month": "2026-08",
+     "n": 20
+    },
+    {
+     "category": "violent-crime",
+     "month": "2026-08",
+     "n": 15
+    },
+    {
+     "category": "burglary",
+     "month": "2026-08",
+     "n": 4
+    },
+    {
+     "category": "bicycle-theft",
+     "month": "2026-08",
+     "n": 6
+    },
+    {
+     "category": "burglary",
+     "month": "2026-07",
+     "n": 3
+    }
+   ]
+  },
+  "crime_updated": {
+   "sql": "SYNTHETIC FIXTURE",
+   "endpoint": "test",
+   "rows": [
+    {
+     "date": "2026-08-01"
+    }
+   ]
+  },
+  "food": {
+   "sql": "SYNTHETIC FIXTURE",
+   "endpoint": "test",
+   "rows": [
+    {
+     "rating": "5",
+     "authority": "Testshire",
+     "n": 30
+    },
+    {
+     "rating": "4",
+     "authority": "Testshire",
+     "n": 8
+    },
+    {
+     "rating": "2",
+     "authority": "Testshire",
+     "n": 2
+    },
+    {
+     "rating": "Exempt",
+     "authority": "Testshire",
+     "n": 5
+    }
+   ]
+  }
+ }
+}
